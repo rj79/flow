@@ -12,7 +12,6 @@ class Project(Base):
 class Release(Base):
     __tablename__ = 'releases'
     id = Column(Integer, primary_key=True)
-    key = Column(String(16))
     name = Column(String(256))
     date = Column(DateTime)
 
