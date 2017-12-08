@@ -17,7 +17,7 @@ clean:
 $(OK_VENV):
 	python3 -m venv $(VENV) && touch $@
 
-$(OK_REQ): $(OK_VENV)
+$(OK_REQ): $(OK_VENV) requirements.txt
 		$(PIP) install -r requirements.txt && touch $@
 
 $(OK_TESTS): $(OK_REQ) unittests/*.py *.py
