@@ -1,5 +1,5 @@
 
 class IssueType:
-    Bug = 1
-    Story = 2
+    Story = 1
+    Defect = 2
     
