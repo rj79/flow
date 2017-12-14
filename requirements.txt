@@ -1,4 +1,6 @@
+wheel
 flask-restful
 sqlalchemy
 sqlalchemy-migrate
 flask-sqlalchemy
+flask-migrate

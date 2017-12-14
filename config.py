@@ -18,7 +18,7 @@ class DevelopmentConfig(Config):
 class UnitTestConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('UNITTEST_DATABASE_URL') or \
-        'sqlite://'
+        'sqlite:///'
 
 class TestingConfig(Config):
     TESTING = True
@@ -34,5 +34,6 @@ config = {
     'dev': DevelopmentConfig,
     'test': TestingConfig,
     'prod': ProductionConfig,
-    'default': DevelopmentConfig
+    'default': DevelopmentConfig,
+    'unittest': UnitTestConfig
 }
