@@ -1,15 +1,30 @@
-from flask_restful import Resource
+from flask_restful import Resource, fields, marshal, marshal_with
+import model
+from app import db
 
-item_list = [{"id": 1, "name": "Flow", "key": "FLOW"},
-{"id": 2, "name": "ProjectTwo", "key": "PTWO"}]
+project_fields = {
+    'key': fields.String,
+    'name': fields.String
+}
 
 class ProjectList(Resource):
     def get(self):
-        return item_list
+        return [marshal(proj) for proj in model.Project.query.all()], 200
+
+    @marshal_with(project_fields)
+    def post(self, key):
+        p = Project(key)
+        db.session.add(p)
+        try:
+            db.commmit()
+        except:
+            return 404
+        return p, 201
+
 
 class Project(Resource):
     def get(self, id):
-        for item in item_list:
+        for item in Project.query.all():
             if item["id"] == id:
                 return item
         abort(404)

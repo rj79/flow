@@ -20,5 +20,5 @@ $(OK_VENV):
 $(OK_REQ): $(OK_VENV) requirements.txt
 		$(PIP) install -r requirements.txt && touch $@
 
-$(OK_TESTS): $(OK_REQ) tests/*.py *.py
+$(OK_TESTS): $(OK_REQ) *.py app/*.py app/api/*.py tests/*.py
 		$(PYTHON) -m unittest discover -s tests && touch $@

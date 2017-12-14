@@ -13,3 +13,6 @@ class Release(Resource):
             if item["id"] == id:
                 return item
         abort(404)
+
+    def post(self, project, name):
+        pass
