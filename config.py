@@ -18,7 +18,7 @@ class DevelopmentConfig(Config):
 class UnitTestConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('UNITTEST_DATABASE_URL') or \
-        'sqlite:///'
+        'sqlite:///:memory:'
 
 class TestingConfig(Config):
     TESTING = True
