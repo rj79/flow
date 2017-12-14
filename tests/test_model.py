@@ -1,9 +1,9 @@
 import unittest
 from flask import current_app
 from app import create_app, db
-from model import Issue, Project
+from model import Issue, Project, Release, Team, User
 
-class TestIssues(unittest.TestCase):
+class CommonTestClass(unittest.TestCase):
     def setUp(self):
         self.app = create_app('unittest')
         self.app_context = self.app.app_context()
@@ -18,7 +18,16 @@ class TestIssues(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
+
+class TestIssue(CommonTestClass):
     def test_can_create_issue(self):
         i = self.proj.create_issue()
         db.session.add(i)
+        db.session.commit()
+
+
+class TestRelease(CommonTestClass):
+    def test_can_create_release(self):
+        r = self.proj.create_release('First release')
+        db.session.add(r)
         db.session.commit()
