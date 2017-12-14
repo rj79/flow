@@ -9,7 +9,7 @@ class CommonTestClass(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-        self.proj = Project()
+        self.proj = Project('TEST')
         db.session.add(self.proj)
         db.session.commit()
 
@@ -21,7 +21,7 @@ class CommonTestClass(unittest.TestCase):
 
 class TestIssue(CommonTestClass):
     def test_can_create_issue(self):
-        i = self.proj.create_issue()
+        i = self.proj.create_issue('Issue')
         db.session.add(i)
         db.session.commit()
 

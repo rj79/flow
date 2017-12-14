@@ -2,24 +2,26 @@ from app import db
 from datetime import datetime
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from werkzeug import generate_password_hash, check_password_hash
-
+from common import State
 
 class Project(db.Model):
     __tablename__ = 'projects'
     id = Column(Integer, primary_key=True)
-    key = Column(String(16))
+    key = Column(String(16), nullable=False, unique=True)
     name = Column(String(256))
 
-    def create_issue(self, title=None):
-        issue = Issue(self)
-        if title is not None:
-            issue.title = title
+    def __init__(self, key):
+        self.key = key
+
+    def create_issue(self, title):
+        issue = Issue(self, title)
         return issue
 
     def create_release(self, name):
         release = Release(self)
         release.name = name
         return release
+
 
 class Release(db.Model):
     __tablename__ = 'releases'
@@ -44,22 +46,50 @@ class Issue(db.Model):
     id = Column(Integer, primary_key=True)
     type = Column(Integer)
     created_date = Column(DateTime, nullable=False, default=datetime.utcnow())
-    title = Column(String(256))
+    state = Column(Integer, default=State.CREATED)
+    resolution = Column(Integer)
+    title = Column(String(256), nullable=False)
     description = Column(String(1024))
+    blocked = Column(Boolean, default=False)
+    reopen_count = Column(Integer, default=0)
     project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
     target_release_id = Column(Integer, ForeignKey('releases.id'), nullable=True)
     team_id = Column(Integer, ForeignKey('teams.id'), nullable = True)
+    creator_id = Column(Integer, ForeignKey('users.id'))
+    assignee_id = Column(Integer, ForeignKey('users.id'))
 
     project = db.relationship('Project')
     target_release = db.relationship('Release')
     team = db.relationship('Team')
+    creator = db.relationship('User', foreign_keys=[creator_id])
+    assignee = db.relationship('User', foreign_keys=[assignee_id])
 
-    def __init__(self, project):
+    def __init__(self, project, title):
         self.project = project
-        self.description = None
+        self.title = title
+
+    def reopen(self):
+        self.state = common.OPEN
+        self.reopen_count += 1
+
+    def get_key(self):
+        return "%s-%d" % (self.project.key, self.id)
 
     def __repr__(self):
         return '<Issue "%s">' % (self.title)
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = Column(Integer, primary_key=True)
+    date = Column(DateTime, default=datetime.utcnow())
+    text = Column(String(1024))
+
+    issue_id = Column(Integer, ForeignKey('issues.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+
+    issue = db.relationship('Issue', backref=db.backref('comments'), lazy=True)
+    user = db.relationship('User', backref=db.backref('comments'), lazy=True)
 
 
 class User(db.Model):
