@@ -4,6 +4,11 @@ class IssueType(IntEnum):
     STORY = 1
     DEFECT = 2
 
+issue_type_name = {
+    IssueType.STORY: "Story",
+    IssueType.DEFECT: "Bug"
+}
+
 class Resolution(IntEnum):
     COMPLETED = 1
     INVALID = 7

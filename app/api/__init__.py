@@ -8,6 +8,8 @@ api = Api(bp)
 api.add_resource(issues.IssueList, '/issues')
 api.add_resource(issues.Issue, '/issues/<int:id>')
 
+api.add_resource(issues.IssueTypeList, '/issue_types')
+
 api.add_resource(projects.ProjectList, '/projects')
 api.add_resource(projects.Project, '/projects/<int:id>')
 
