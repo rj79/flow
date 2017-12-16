@@ -1,6 +1,8 @@
-wheel
+flask
+flask-bootstrap
+flask-migrate
 flask-restful
+flask-sqlalchemy
 sqlalchemy
 sqlalchemy-migrate
-flask-sqlalchemy
-flask-migrate
+wheel
