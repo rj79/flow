@@ -1,11 +1,11 @@
 {% extends "bootstrap/base.html" %}
 {% block navbar %}
 <div class="navbar navbar-fixed-top">
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Create issue</button>
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createModal">Create issue</button>
 </div>
 {% endblock %}
 {% block content %}
-<div id="myModal" class="modal fade" role="dialog">
+<div id="createModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -17,9 +17,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="type">Type:</label>
-          <select class="form-control" id="type">
-            <option>Bug</option>
-            <option>Story</option>
+          <select class="form-control" id="issue_type">
           </select>
         </div>
         <div class='form-group'>
@@ -39,4 +37,21 @@
 
   </div>
 </div>
+
+{% endblock %}
+{% block scripts %}
+ <script src="/static/flow.js"></script>
+ <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+</script>
+ <script>
+    $(document).ready(function() {
+      $("#createModal").on('show.bs.modal', function () {
+        flow.getIssueTypes();
+      });
+    });
+</script>
+{{super()}}
 {% endblock %}
