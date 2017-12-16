@@ -5,10 +5,10 @@ from app.api import issues, projects, releases, teams
 bp = Blueprint('api', __name__)
 api = Api(bp)
 
-api.add_resource(issues.IssueList, '/issues')
-api.add_resource(issues.Issue, '/issues/<int:id>')
+api.add_resource(issues.IssueListResource, '/issues')
+api.add_resource(issues.IssueResource, '/issues/<int:id>')
 
-api.add_resource(issues.IssueTypeList, '/issue_types')
+api.add_resource(issues.IssueTypeListResource, '/issue_types')
 
 api.add_resource(projects.ProjectList, '/projects')
 api.add_resource(projects.Project, '/projects/<int:id>')

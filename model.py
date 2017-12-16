@@ -13,14 +13,17 @@ class Project(db.Model):
     def __init__(self, key):
         self.key = key
 
-    def create_issue(self, title):
-        issue = Issue(self, title)
+    def create_issue(self, issue_type, title):
+        issue = Issue(self, issue_type, title)
         return issue
 
     def create_release(self, name):
         release = Release(self)
         release.name = name
         return release
+
+    def __repr__(self):
+        return "<Project id=%d key='%s'>" % (self.id, self.key)
 
 
 class Release(db.Model):
@@ -44,15 +47,15 @@ class Team(db.Model):
 class Issue(db.Model):
     __tablename__ = 'issues'
     id = Column(Integer, primary_key=True)
-    type = Column(Integer)
+    issue_type = Column(Integer)
     created_date = Column(DateTime, nullable=False, default=datetime.utcnow())
     state = Column(Integer, default=State.CREATED)
     resolution = Column(Integer)
-    title = Column(String(256), nullable=False)
+    title = Column(String(256), nullable=True)
     description = Column(String(1024))
     blocked = Column(Boolean, default=False)
     reopen_count = Column(Integer, default=0)
-    project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
+    project_id = Column(Integer, ForeignKey('projects.id'), nullable=True)
     target_release_id = Column(Integer, ForeignKey('releases.id'), nullable=True)
     team_id = Column(Integer, ForeignKey('teams.id'), nullable = True)
     creator_id = Column(Integer, ForeignKey('users.id'))
@@ -64,8 +67,9 @@ class Issue(db.Model):
     creator = db.relationship('User', foreign_keys=[creator_id])
     assignee = db.relationship('User', foreign_keys=[assignee_id])
 
-    def __init__(self, project, title):
-        self.project = project
+    def __init__(self, project, issue_type, title):
+        self.project_id = project.id
+        self.issue_type = issue_type
         self.title = title
 
     def reopen(self):
