@@ -23,7 +23,9 @@ class IssueListResource(Resource):
         args = parser.parse_args()
         p = Project.query.filter_by(id=1).first()
         if p is None:
-            return 401
+            p = Project('DEFAULT')
+            db.session.add(p)
+            db.session.commit()
         i = Issue(p, args['issue_type'], args['title'])
         i.description = args['description']
         db.session.add(i)

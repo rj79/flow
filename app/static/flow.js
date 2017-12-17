@@ -12,6 +12,15 @@ function Flow() {
       }
     });
   };
+
+  this.createIssue = function() {
+    var data = {'issue_type': $('#issue_type').children(':selected').attr('key'), 'title': $('#title').val(),
+                'description': $('#description').val()};
+    //console.log(data);
+    $.post('/api/issues', data, function() {
+      $('#createModal').modal('hide');
+    });
+  }
 };
 
 var flow = new Flow();

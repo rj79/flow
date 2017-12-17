@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 5a1d2a4acc22
+Revision ID: 0b25bdde826c
 Revises: 
-Create Date: 2017-12-15 00:29:01.758490
+Create Date: 2017-12-17 01:36:31.770109
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5a1d2a4acc22'
+revision = '0b25bdde826c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -56,15 +56,15 @@ def upgrade():
     )
     op.create_table('issues',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('type', sa.Integer(), nullable=True),
+    sa.Column('issue_type', sa.Integer(), nullable=True),
     sa.Column('created_date', sa.DateTime(), nullable=False),
     sa.Column('state', sa.Integer(), nullable=True),
     sa.Column('resolution', sa.Integer(), nullable=True),
-    sa.Column('title', sa.String(length=256), nullable=False),
+    sa.Column('title', sa.String(length=256), nullable=True),
     sa.Column('description', sa.String(length=1024), nullable=True),
     sa.Column('blocked', sa.Boolean(), nullable=True),
     sa.Column('reopen_count', sa.Integer(), nullable=True),
-    sa.Column('project_id', sa.Integer(), nullable=False),
+    sa.Column('project_id', sa.Integer(), nullable=True),
     sa.Column('target_release_id', sa.Integer(), nullable=True),
     sa.Column('team_id', sa.Integer(), nullable=True),
     sa.Column('creator_id', sa.Integer(), nullable=True),
