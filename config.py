@@ -23,6 +23,7 @@ class DevelopmentConfig(Config):
 class UnitTestConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('UNITTEST_DATABASE_URL') or \
         'sqlite:///:memory:'
 
