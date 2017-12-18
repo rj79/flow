@@ -1,4 +1,6 @@
-from tests.test_common import FlowBaseTestCase as tc, get_json
+from tests.test_common import FlowBaseTestCase as tc
+from app import db
+from app.model import User
 
 
 class TestAuth(tc):
@@ -20,3 +22,14 @@ class TestAuth(tc):
                                     headers={'Content-Type': 'application/x-www-form-urlencoded'})
         self.assertEqual(302, response.status_code)
         self.assertEqual('http://localhost/login', response.headers['Location'])
+
+    def test_login_succeeds_if_user_exists(self):
+        u = User(name='Jane Smith', email='jane@smith.com')
+        u.set_password('secret')
+        db.session.add(u)
+        db.session.commit()
+        response = self.client.post('/login',
+                                    data={'email': 'jane@smith.com', 'password': 'secret'},
+                                    headers={'Content-Type': 'application/x-www-form-urlencoded'})
+        self.assertEqual(302, response.status_code)
+        self.assertEqual('http://localhost/', response.headers['Location'])
