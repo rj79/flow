@@ -1,5 +1,4 @@
 from flask_restful import Resource, fields, marshal, marshal_with
-import model
 from app import db
 
 project_fields = {

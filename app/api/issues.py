@@ -1,7 +1,8 @@
 from flask_restful import Resource, fields, marshal_with, request, reqparse
 from app import db
+from app.model import Issue, Project
 import common
-from model import Issue, Project
+
 
 issue_created_fields = {
     'id': fields.Integer,

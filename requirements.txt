@@ -1,8 +1,11 @@
 flask
+flask-babel
 flask-bootstrap
+flask-login
 flask-migrate
 flask-restful
 flask-sqlalchemy
+flask-wtf
 sqlalchemy
 sqlalchemy-migrate
 wheel

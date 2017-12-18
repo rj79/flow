@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+LANGUAGES = {
+    'en': 'English'
+}
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'DEVELOPMENT_KEY_1234'
@@ -17,6 +22,7 @@ class DevelopmentConfig(Config):
 
 class UnitTestConfig(Config):
     TESTING = True
+    WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('UNITTEST_DATABASE_URL') or \
         'sqlite:///:memory:'
 

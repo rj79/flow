@@ -1,11 +1,18 @@
 import unittest
 from flask import current_app
 from app import create_app, db
-from model import Issue, Project, Release, Team, User
+from app.model import Issue, Project, Release, Team, User
 import json
 
 def get_json(response):
     return json.loads(response.get_data().decode('utf-8'))
+
+def scrape_csrf_token(response):
+    for line in response.data.decode('utf-8').split('\n'):
+        if "csrf_token" in line:
+            for token in line.split(' '):
+                if token[0:7] == 'value="':
+                    return token[7:-2]
 
 class FlowBaseTestCase(unittest.TestCase):
     def setUp(self):
@@ -23,3 +30,6 @@ class FlowBaseTestCase(unittest.TestCase):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+
+    def get_csrf_token(self, url):
+        return scrape_csrf_token(self.client.get(url))

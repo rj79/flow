@@ -3,8 +3,6 @@
 <div class="navbar navbar-fixed-top">
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createModal">Create issue</button>
 </div>
-{% endblock %}
-{% block content %}
 <div id="createModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -37,8 +35,35 @@
 
   </div>
 </div>
-
 {% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if current_user.is_authenticated %}
+        {% with tasks = current_user.get_tasks_in_progress() %}
+        {% if tasks %}
+            {% for task in tasks %}
+            <div class="alert alert-success" role="alert">
+                {{ task.description }}
+                <span id="{{ task.id }}-progress">{{ task.get_progress() }}</span>%
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% endif %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
+
 {% block scripts %}
  <script src="/static/flow.js"></script>
  <script

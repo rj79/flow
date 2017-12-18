@@ -1,7 +1,7 @@
 from tests.test_common import FlowBaseTestCase as tc
 from app import db
 from common import IssueType
-from model import Project, Issue
+from app.model import Project, Issue
 
 
 class TestIssue(tc):

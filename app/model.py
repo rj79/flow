@@ -1,8 +1,12 @@
-from app import db
+from app import db, login_manager
 from datetime import datetime
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from werkzeug import generate_password_hash, check_password_hash
 from common import State
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 class Project(db.Model):
     __tablename__ = 'projects'
@@ -110,7 +114,7 @@ class User(db.Model):
 
     pw_reset_token = Column(String(64), unique=True)
     pw_reset_token_expiration = Column(DateTime)
-
+        
     def set_password(self, password):
         self.pwhash = generate_password_hash(password)
 
@@ -122,6 +126,22 @@ class User(db.Model):
             {'reset_password': self.id, 'exp': time() + expires_in},
             current_app.config['SECRET_KEY'],
             algorithm='HS256').decode('utf-8')
+
+    """ Used by flask-login"""
+    def is_authenticated(self):
+        pass
+
+    """ Used by flask-login"""
+    def is_active(self):
+        pass
+
+    """ Used by flask-login"""
+    def is_anonymous(self):
+        pass
+
+    """ Used by flask-login"""
+    def get_id(self):
+        pass
 
     @staticmethod
     def verify_reset_password_token(token):
