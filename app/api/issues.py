@@ -1,7 +1,7 @@
 from flask_restful import Resource, fields, marshal_with, request, reqparse
 from app import db
 from app.model import Issue, Project
-import common
+from app.common import IssueType, issue_type_name
 
 
 issue_created_fields = {
@@ -46,6 +46,6 @@ class IssueResource(Resource):
 class IssueTypeListResource(Resource):
     def get(self):
         result = []
-        for type_id in common.IssueType:
-            result.append({'id': type_id, 'name': common.issue_type_name[type_id]})
+        for type_id in IssueType:
+            result.append({'id': type_id, 'name': issue_type_name[type_id]})
         return result

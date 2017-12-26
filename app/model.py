@@ -2,7 +2,7 @@ from app import db, login_manager
 from datetime import datetime
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from werkzeug import generate_password_hash, check_password_hash
-from common import State
+from app.common import State
 
 @login_manager.user_loader
 def load_user(id):
@@ -114,7 +114,7 @@ class User(db.Model):
 
     pw_reset_token = Column(String(64), unique=True)
     pw_reset_token_expiration = Column(DateTime)
-        
+
     def set_password(self, password):
         self.pwhash = generate_password_hash(password)
 

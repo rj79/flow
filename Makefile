@@ -1,6 +1,8 @@
 VENV=.venv
 PYTHON=$(VENV)/bin/python
 PIP=$(VENV)/bin/pip
+
+PYC=$(shell find . -name '*.pyc')
 OK_VENV=.ok_venv
 OK_REQ=.ok_req
 OK_TESTS=.ok_tests
@@ -12,7 +14,11 @@ OK+=$(OK_TESTS)
 all: $(OK_TESTS)
 
 clean:
-	rm -rf __pycache__ $(OK)
+	rm -rf __pycache__
+	rm -f $(PYC) $(OK)
+
+envclean:
+	rm -rf $(VENV)
 
 $(OK_VENV):
 	python3 -m venv $(VENV) && touch $@
