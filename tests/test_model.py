@@ -1,4 +1,4 @@
-from tests.test_common import FlowBaseTestCase as tc
+from tests.test_common import BaseTestCase as tc
 from app import db
 from app.common import IssueType
 from app.model import Project, Issue

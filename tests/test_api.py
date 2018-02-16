@@ -1,5 +1,5 @@
 import json
-from tests.test_common import FlowBaseTestCase as tc, get_json
+from tests.test_common import BaseTestCase as tc, get_json
 from app import create_app, db
 
 

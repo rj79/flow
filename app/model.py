@@ -5,8 +5,11 @@ from werkzeug import generate_password_hash, check_password_hash
 from app.common import State
 
 @login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_id):
+    try:
+        return User.query.get(int(user_id.decode('utf-8')))
+    except ValueError:
+        return None
 
 class Project(db.Model):
     __tablename__ = 'projects'
@@ -34,7 +37,7 @@ class Release(db.Model):
     __tablename__ = 'releases'
     id = Column(Integer, primary_key=True)
     name = Column(String(256), nullable=False)
-    date = Column(DateTime)
+    release_date = Column(DateTime)
     project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
     project = db.relationship('Project')
 
@@ -87,6 +90,18 @@ class Issue(db.Model):
         return '<Issue "%s">' % (self.title)
 
 
+"""
+Association table for issue_dependencies between issues
+TODO: Find better column names! :-)
+"""
+"""
+dependency_table = Table('issue_dependencies', db.Model.metadata,
+    Column('needing_id', Integer, ForeignKey('issues.id')),
+    Column('fulfilling_id', Integer, ForeignKey('issues.id'))
+)
+"""
+
+
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = Column(Integer, primary_key=True)
@@ -129,19 +144,19 @@ class User(db.Model):
 
     """ Used by flask-login"""
     def is_authenticated(self):
-        pass
+        return True
 
     """ Used by flask-login"""
     def is_active(self):
-        pass
+        return True
 
     """ Used by flask-login"""
     def is_anonymous(self):
-        pass
+        return False
 
     """ Used by flask-login"""
     def get_id(self):
-        pass
+        return str(self.id).encode('utf-8')
 
     @staticmethod
     def verify_reset_password_token(token):

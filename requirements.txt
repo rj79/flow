@@ -1,6 +1,7 @@
 flask
 flask-babel
 flask-bootstrap
+flask-nav
 flask-login
 flask-migrate
 flask-restful

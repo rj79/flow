@@ -14,9 +14,10 @@ def scrape_csrf_token(response):
                 if token[0:7] == 'value="':
                     return token[7:-2]
 
-class FlowBaseTestCase(unittest.TestCase):
+class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('unittest')
+        self.app.config['WTF_CSRF_ENABLED'] = False
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()

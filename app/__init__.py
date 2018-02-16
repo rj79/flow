@@ -1,6 +1,8 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask_babel import Babel
 from flask_bootstrap import Bootstrap
+from flask_nav import Nav
+from flask_nav.elements import Navbar, View
 from flask_login import LoginManager
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
@@ -9,8 +11,17 @@ from config import config
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
 babel = Babel()
 bootstrap = Bootstrap()
+nav = Nav()
+
+@nav.navigation()
+def navbar():
+    #return Navbar('fl[]w')
+    return Navbar('fl[]w',
+        View('Home', 'main.index'),
+        View('Project', 'admin.project'))
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -22,7 +33,8 @@ def create_app(config_name):
     login_manager.init_app(app)
     bootstrap.init_app(app)
     babel.init_app(app)
-    
+    nav.init_app(app)
+
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
 
@@ -32,6 +44,7 @@ def create_app(config_name):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-
+    from app.admin import bp as admin_bp
+    app.register_blueprint(admin_bp, url_prefix='/admin')
 
     return app
