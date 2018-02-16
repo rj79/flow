@@ -2,7 +2,7 @@ from tests.test_common import BaseTestCase as tc
 from app import db
 from app.common import IssueType
 from app.model import Project, Issue
-
+from datetime import date
 
 class TestIssue(tc):
     def test_can_create_and_query_issues(self):
@@ -24,6 +24,6 @@ class TestIssue(tc):
 
 class TestRelease(tc):
     def test_can_create_release(self):
-        r = self.proj.create_release('First release')
+        r = self.proj.create_release('First release', date(2018, 2, 16))
         db.session.add(r)
         db.session.commit()

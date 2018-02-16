@@ -1,7 +1,8 @@
 import unittest
 from app.model import User
+from tests.test_common import BaseTestCase as tc
 
-class UserModelTests(unittest.TestCase):
+class UserModelTests(tc):
     def test_password_setter(self):
         u = User(name='Joe', email='user@domain')
         u.set_password('cat')

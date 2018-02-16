@@ -10,7 +10,8 @@ LANGUAGES = {
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'DEVELOPMENT_KEY_1234'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
     @staticmethod
     def init_app(app):
         pass

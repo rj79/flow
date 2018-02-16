@@ -3,6 +3,12 @@
 
 {% block content %}
 
+{% for release in releases %}
+<div>
+  {{ release.name }}
+  Release date: {{ release.date }}
+</div>
+{% endfor %}
 
     <!-- Trigger the modal with a button -->
 <button type="button" class="btn btn-info btn-lg add-button" data-toggle="modal" data-target="#myModal"><i class="fa fa-calendar-plus-o fa-2x">Create release</i></button>

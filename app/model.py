@@ -1,15 +1,21 @@
 from app import db, login_manager
 from datetime import datetime
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
 from werkzeug import generate_password_hash, check_password_hash
 from app.common import State
 
 @login_manager.user_loader
 def load_user(user_id):
     try:
-        return User.query.get(int(user_id.decode('utf-8')))
+        return User.query.get(int(user_id))
     except ValueError:
         return None
+
+def today():
+    return date.today()
+
+def utcnow():
+    return datetime.utcnow()
 
 class Project(db.Model):
     __tablename__ = 'projects'
@@ -17,17 +23,16 @@ class Project(db.Model):
     key = Column(String(16), nullable=False, unique=True)
     name = Column(String(256))
 
-    def __init__(self, key):
+    def __init__(self, key, name):
         self.key = key
+        self.name = name
 
     def create_issue(self, issue_type, title):
         issue = Issue(self, issue_type, title)
         return issue
 
-    def create_release(self, name):
-        release = Release(self)
-        release.name = name
-        return release
+    def create_release(self, name, date):
+        return Release(self, name, date)
 
     def __repr__(self):
         return "<Project id=%d key='%s'>" % (self.id, self.key)
@@ -37,12 +42,14 @@ class Release(db.Model):
     __tablename__ = 'releases'
     id = Column(Integer, primary_key=True)
     name = Column(String(256), nullable=False)
-    release_date = Column(DateTime)
+    release_date = Column(Date)
     project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
     project = db.relationship('Project')
 
-    def __init__(self, project):
+    def __init__(self, project, name, date):
         self.project = project
+        self.name = name
+        self.date = date
 
 
 class Team(db.Model):
@@ -55,7 +62,7 @@ class Issue(db.Model):
     __tablename__ = 'issues'
     id = Column(Integer, primary_key=True)
     issue_type = Column(Integer)
-    created_date = Column(DateTime, nullable=False, default=datetime.utcnow())
+    created_date = Column(DateTime, nullable=False, default=utcnow)
     state = Column(Integer, default=State.CREATED)
     resolution = Column(Integer)
     title = Column(String(256), nullable=True)
@@ -105,7 +112,7 @@ dependency_table = Table('issue_dependencies', db.Model.metadata,
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = Column(Integer, primary_key=True)
-    date = Column(DateTime, default=datetime.utcnow())
+    date = Column(DateTime, default=utcnow)
     text = Column(String(1024))
 
     issue_id = Column(Integer, ForeignKey('issues.id'), nullable=False)
@@ -156,7 +163,7 @@ class User(db.Model):
 
     """ Used by flask-login"""
     def get_id(self):
-        return str(self.id).encode('utf-8')
+        return str(self.id)
 
     @staticmethod
     def verify_reset_password_token(token):
