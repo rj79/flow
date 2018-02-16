@@ -1,15 +1,23 @@
-from flask_restful import Resource
+from flask_restful import Resource, fields, marshal_with
+from flask_login import login_required
+from app.model import Team
+from utils import json_error as je
 
-item_list = [{"id": 1, "name": "One Man Show"},
-{"id": 2, "name": "The Squad"}]
+team_fields = {
+    'id': fields.Integer,
+    'name': fields.String
+}
 
-class TeamList(Resource):
+
+class TeamListResource(Resource):
+    @login_required
+    @marshal_with(team_fields)
     def get(self):
-        return item_list
+        return Team.query.all()
 
-class Team(Resource):
+class TeamResource(Resource):
+    @login_required
     def get(self, id):
-        for item in item_list:
-            if item["id"] == id:
-                return item
-        abort(404)
+        t = Team.query.get(int(id))
+        if not t:
+            abort(404, je('No team with id {}'.format(id)))

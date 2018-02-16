@@ -1,8 +1,9 @@
 from flask_restful import Resource, fields, marshal_with, request, reqparse
+from flask_login import login_required
 from app import db
 from app.model import Issue, Project
 from app.common import IssueType, issue_type_name
-
+from utils import json_error as je
 
 issue_created_fields = {
     'id': fields.Integer,
@@ -12,9 +13,11 @@ issue_created_fields = {
 }
 
 class IssueListResource(Resource):
+    @login_required
     def get(self):
-        return issue_list
+        return [marshal(i, issue_created_fields) for i in Issue.query.all()]
 
+    @login_required
     @marshal_with(issue_created_fields)
     def post(self):
         parser = reqparse.RequestParser()
@@ -24,7 +27,7 @@ class IssueListResource(Resource):
         args = parser.parse_args()
         p = Project.query.filter_by(id=1).first()
         if p is None:
-            p = Project('DEFAULT')
+            p = Project('DEFAULT', 'Default project')
             db.session.add(p)
             db.session.commit()
         i = Issue(p, args['issue_type'], args['title'])
@@ -35,15 +38,17 @@ class IssueListResource(Resource):
 
 
 class IssueResource(Resource):
+    @login_required
+    @marshal_with(issue_created_fields)
     def get(self, id):
-        for issue in issue_list:
-            print(issue)
-            if issue["id"] == id:
-                return issue
-        abort(404)
+        i = Issue.query.get(id)
+        if not i:
+            abort(404, je('No issue with id {}'.format(id)))
+        return issue
 
 
 class IssueTypeListResource(Resource):
+    @login_required
     def get(self):
         result = []
         for type_id in IssueType:

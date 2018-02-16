@@ -10,11 +10,11 @@ api.add_resource(issues.IssueResource, '/issues/<int:id>')
 
 api.add_resource(issues.IssueTypeListResource, '/issue_types')
 
-api.add_resource(projects.ProjectList, '/projects')
-api.add_resource(projects.Project, '/projects/<int:id>')
+api.add_resource(projects.ProjectListResource, '/projects')
+api.add_resource(projects.ProjectResource, '/projects/<int:id>')
 
-api.add_resource(releases.ReleaseList, '/releases')
-api.add_resource(releases.Release, '/releases/<int:id>')
+api.add_resource(releases.ReleaseListResource, '/releases')
+api.add_resource(releases.ReleaseResource, '/releases/<int:id>')
 
-api.add_resource(teams.TeamList, '/teams')
-api.add_resource(teams.Team, '/teams/<int:id>')
+api.add_resource(teams.TeamListResource, '/teams')
+api.add_resource(teams.TeamResource, '/teams/<int:id>')
