@@ -3,7 +3,7 @@ from flask_babel import Babel
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
 from config import config
@@ -18,10 +18,13 @@ nav = Nav()
 
 @nav.navigation()
 def navbar():
-    #return Navbar('fl[]w')
-    return Navbar('fl[]w',
-        View('Home', 'main.index'),
-        View('Project', 'admin.project'))
+    if current_user.is_authenticated:
+        return Navbar('fl[]w',
+            View('Home', 'main.index'),
+            View('Project', 'admin.project'),
+            View('Logout', 'auth.logout'))
+    else:
+        return Navbar('fl[]w')
 
 def create_app(config_name):
     app = Flask(__name__)
