@@ -28,3 +28,6 @@ $(OK_REQ): $(OK_VENV) requirements.txt
 
 $(OK_TESTS): $(OK_REQ) *.py app/*.py app/api/*.py tests/*.py
 		$(PYTHON) -m unittest discover -s tests && touch $@
+
+run: $(OK_TESTS)
+		PATH=$(VENV)/bin:$(PATH) FLASK_DEBUG=1 FLASK_APP=flow.py flask run
