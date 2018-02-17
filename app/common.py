@@ -5,8 +5,8 @@ class IssueType(IntEnum):
     DEFECT = 2
 
 issue_type_name = {
-    IssueType.STORY: "Story",
-    IssueType.DEFECT: "Bug"
+    int(IssueType.STORY): "Story",
+    int(IssueType.DEFECT): "Bug"
 }
 
 class Resolution(IntEnum):

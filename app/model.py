@@ -2,7 +2,7 @@ from app import db, login_manager
 from datetime import datetime
 from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
 from werkzeug import generate_password_hash, check_password_hash
-from app.common import State
+from app.common import State, issue_type_name
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -61,7 +61,7 @@ class Team(db.Model):
 class Issue(db.Model):
     __tablename__ = 'issues'
     id = Column(Integer, primary_key=True)
-    issue_type = Column(Integer)
+    issue_type_id = Column(Integer)
     created_date = Column(DateTime, nullable=False, default=utcnow)
     state = Column(Integer, default=State.CREATED)
     resolution = Column(Integer)
@@ -83,7 +83,7 @@ class Issue(db.Model):
 
     def __init__(self, project, issue_type, title):
         self.project_id = project.id
-        self.issue_type = issue_type
+        self.issue_type_id = issue_type
         self.title = title
 
     def reopen(self):
@@ -92,6 +92,12 @@ class Issue(db.Model):
 
     def get_key(self):
         return "%s-%d" % (self.project.key, self.id)
+
+    def typename(self):
+        try:
+            return issue_type_name[self.issue_type_id]
+        except:
+            return "Unknown type"
 
     def __repr__(self):
         return '<Issue "%s">' % (self.title)

@@ -15,11 +15,13 @@ class TestIssueListApi(tc):
     def test_create_issue(self):
         self.login_user()
         response = self.client.post('/api/issues',
-                                    data={'issue_type': 2, 'title': 'Issue', 'description': 'Description'})
+                                    data={'project_id': self.proj.id,
+                                          'issue_type_id': 2, 'title': 'Issue',
+                                          'description': 'Description'})
         self.assertEqual(201, response.status_code)
         d = get_json(response)
         self.assertEqual(1, d['id'])
-        self.assertEqual(2, d['issue_type'])
+        self.assertEqual(2, d['issue_type_id'])
         self.assertEqual('Issue', d['title'])
         self.assertEqual('Description', d['description'])
 

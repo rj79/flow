@@ -18,8 +18,8 @@ class TestIssue(tc):
 
         self.assertEqual('Issue 1', j1.title)
         self.assertEqual('Issue 2', j2.title)
-        self.assertEqual(IssueType.STORY, j1.issue_type)
-        self.assertEqual(IssueType.DEFECT, j2.issue_type)
+        self.assertEqual(IssueType.STORY, j1.issue_type_id)
+        self.assertEqual(IssueType.DEFECT, j2.issue_type_id)
 
 
 class TestRelease(tc):

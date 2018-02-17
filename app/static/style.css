@@ -1,0 +1,12 @@
+
+.issue-card {
+  border-style: solid;
+  border-radius: 2px;
+  border-width: thin;
+  margin: 1em 1em 1em 1em;
+  padding: 1em 1em 1em 1em;
+}
+.issue-title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
