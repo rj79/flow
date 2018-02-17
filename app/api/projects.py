@@ -13,7 +13,7 @@ project_fields = {
 class ProjectListResource(Resource):
     @login_required
     def get(self):
-        return [marshal(proj) for proj in Project.query.all()]
+        return [marshal(proj, project_fields) for proj in Project.query.all()]
 
     @login_required
     @marshal_with(project_fields)
@@ -28,6 +28,8 @@ class ProjectListResource(Resource):
             return {'status': 400, 'message': 'Key must only contain a-z'}, 400
 
         p = Project(args['key'].upper(), args['name'])
+        db.session.add(p)
+        db.session.commit()
         return p, 201
 
 class ProjectResource(Resource):

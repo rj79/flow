@@ -76,6 +76,10 @@ class TestReleaseListApi(tc):
                               data={'name': 'R1', 'project_id': self.proj.id,
                                     'release_date': '20180216'})
         self.assertEqual(201, rv.status_code)
+        j = get_json(rv)
+        self.assertEqual('R1', j['name'])
+        self.assertEqual(1, j['project_id'])
+        self.assertEqual('20180216', j['release_date'])
 
     def test_release_not_created_if_date_invalid(self):
         self.login_user()

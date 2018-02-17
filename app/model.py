@@ -44,12 +44,12 @@ class Release(db.Model):
     name = Column(String(256), nullable=False)
     release_date = Column(Date)
     project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
-    project = db.relationship('Project')
+    project = db.relationship('Project', backref='releases', lazy=True)
 
     def __init__(self, project, name, date):
         self.project = project
         self.name = name
-        self.date = date
+        self.release_date = date
 
 
 class Team(db.Model):

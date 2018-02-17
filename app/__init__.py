@@ -21,7 +21,7 @@ def navbar():
     if current_user.is_authenticated:
         return Navbar('fl[]w',
             View('Home', 'main.index'),
-            View('Project', 'admin.project'),
+            View('Projects', 'admin.projects'),
             View('Logout', 'auth.logout'))
     else:
         return Navbar('fl[]w')

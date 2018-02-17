@@ -2,20 +2,24 @@ from flask_restful import Resource, fields, marshal, marshal_with, reqparse
 from flask_login import login_required
 from flask import abort
 from datetime import date, datetime
-from app.model import Project
+from app.model import Project, Release
 from app import db
 from utils import json_error as je
 
+class DateField(fields.Raw):
+    def format(self, value):
+        return value.strftime('%Y%m%d')
+
 release_fields = {
     'name': fields.String,
-    'release_date': fields.DateTime,
+    'release_date': DateField,
     'project_id': fields.Integer
 }
 
 class ReleaseListResource(Resource):
     @login_required
     def get(self):
-        rl = [ marshal(r) for r in Release.query.all() ]
+        rl = [ marshal(r, release_fields) for r in Release.query.all() ]
         return rl
 
     @login_required
