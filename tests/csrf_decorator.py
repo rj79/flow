@@ -23,16 +23,21 @@ class RequestShim(object):
     """
     def __init__(self, client):
         self.client = client
+        self.vary = set({})
 
     def set_cookie(self, key, value='', *args, **kwargs):
         "Set the cookie on the Flask test client."
         server_name = flask.current_app.config["SERVER_NAME"] or "localhost"
+
+        # TODO: Understand why samesite is not accepted by set_cookie, even
+        # with Werkzeug > 0.14. Remove this hack
+        del kwargs['samesite']
+        
         return self.client.set_cookie(
             server_name, key=key, value=value, *args, **kwargs
         )
 
     def delete_cookie(self, key, *args, **kwargs):
-        print('DELETE_COOKIE', key)
         "Delete the cookie on the Flask test client."
         server_name = flask.current_app.config["SERVER_NAME"] or "localhost"
         return self.client.delete_cookie(
