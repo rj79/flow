@@ -19,7 +19,7 @@ envclean:
 	rm -rf $(VENV)
 
 $(VENV):
-	python3 -m venv $(VENV) && touch $@
+	python3.6 -m venv $(VENV) && touch $@
 
 $(OK_REQ): $(VENV) requirements.txt
 		$(PIP) install -r requirements.txt && touch $@
