@@ -23,7 +23,7 @@
         <h4 class="modal-title"><i class="fa fa-cube fa-2x"></i> Create release</h4>
       </div>
       <div class="modal-body">
-        {{ wtf.quick_form(project_form, action=url_for('api.projects')) }}
+        {{ wtf.quick_form(project_form, action=url_for('api.v1.projects')) }}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

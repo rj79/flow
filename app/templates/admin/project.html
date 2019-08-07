@@ -24,7 +24,7 @@
         <h4 class="modal-title"><i class="fa fa-calendar-plus-o fa-2x"></i>Create release</h4>
       </div>
       <div class="modal-body">
-        {{ wtf.quick_form(release_form, action=url_for('api.releases')) }}
+        {{ wtf.quick_form(release_form, action=url_for('api.v1.releases')) }}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
