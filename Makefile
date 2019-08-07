@@ -1,3 +1,4 @@
+HOST_PYTHON=$(shell which python3.8 || which python3.7 || which python3.6)
 VENV=.venv
 PYTHON=$(VENV)/bin/python
 PIP=$(VENV)/bin/pip
@@ -19,7 +20,7 @@ envclean:
 	rm -rf $(VENV)
 
 $(VENV):
-	python3.6 -m venv $(VENV) && touch $@
+	$(HOST_PYTHON) -m venv $(VENV) && touch $@
 
 $(OK_REQ): $(VENV) requirements.txt
 		$(PIP) install -r requirements.txt && touch $@
