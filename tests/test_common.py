@@ -1,9 +1,9 @@
-import unittest
+from app import create_app
+from app.model import Issue, Project, Release, Team, User, db
 from flask import current_app, url_for
-from app import create_app, db
-from app.model import Issue, Project, Release, Team, User
 from tests.csrf_decorator import FlaskClient
 import json
+import unittest
 
 def get_json(response):
     return json.loads(response.get_data().decode('utf-8'))

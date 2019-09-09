@@ -13,3 +13,8 @@ def index():
     form.project_id.choices = [(p.id, "{} - {}".format(p.key, p.name)) for p in Project.query.all()]
     form.issue_type_id.choices = [(int(t), issue_type_name[int(t)]) for t in IssueType]
     return render_template('index.html', issues=issues, form=form)
+
+
+@bp.route('/bulma')
+def bulma():
+    return render_template('bulma.html')

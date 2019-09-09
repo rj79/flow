@@ -1,8 +1,8 @@
-from flask_restful import Resource, fields, marshal, marshal_with, request, reqparse
-from flask_login import login_required
-from app import db
-from app.model import Issue, Project
 from app.common import IssueType, issue_type_name
+from app.model import Issue, Project
+from database import db
+from flask_login import login_required
+from flask_restful import Resource, fields, marshal, marshal_with, request, reqparse
 from utils import json_error as je
 
 issue_created_fields = {

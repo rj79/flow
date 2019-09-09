@@ -1,20 +1,19 @@
+from config import config
+from database import db
 from flask import Flask, url_for
 from flask_babel import Babel
-from flask_bootstrap import Bootstrap
+from flask_materialize import Material
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate, MigrateCommand
-from flask_sqlalchemy import SQLAlchemy
-from config import config
 
-db = SQLAlchemy()
+babel = Babel()
+material = Material()
 migrate = Migrate()
+nav = Nav()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
-babel = Babel()
-bootstrap = Bootstrap()
-nav = Nav()
 
 @nav.navigation()
 def navbar():
@@ -34,7 +33,7 @@ def create_app(config_name):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
-    bootstrap.init_app(app)
+    material.init_app(app)
     babel.init_app(app)
     nav.init_app(app)
 

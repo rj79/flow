@@ -1,13 +1,12 @@
+from app.model import User
+from app.auth import bp
+from app.auth.email import send_password_reset_email
+from app.auth.forms import LoginForm, RegistrationForm, \
+    ResetPasswordRequestForm, ResetPasswordForm
+from database import db
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_babel import _
-from app import db
-from app.auth import bp
-from app.auth.forms import LoginForm, RegistrationForm, \
-    ResetPasswordRequestForm, ResetPasswordForm
-from app.model import User
-from app.auth.email import send_password_reset_email
-
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():

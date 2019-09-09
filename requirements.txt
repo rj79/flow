@@ -1,8 +1,9 @@
 flask
 flask-babel
-flask-bootstrap
 flask-nav
 flask-login
+flask-mail
+flask-materialize
 flask-migrate
 flask-restful
 flask-sqlalchemy

@@ -1,7 +1,6 @@
 from tests.test_common import BaseTestCase as tc
-from app import db
 from app.common import IssueType
-from app.model import Project, Issue
+from app.model import Project, Issue, db
 from datetime import date
 
 class TestIssue(tc):

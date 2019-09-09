@@ -1,7 +1,7 @@
+from app.model import Project
 from flask_restful import Resource, fields, marshal, marshal_with, reqparse
 from flask_login import login_required
-from app.model import Project
-from app import db
+from database import db
 import re
 from utils import json_error as je
 

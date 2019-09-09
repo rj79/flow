@@ -1,4 +1,6 @@
-{% extends 'bootstrap/base.html' %}
+{% extends "material/base.html" %}
+
+{% block title %}Fl[]w{% endblock %}
 
 {% block navbar %}
 {{nav.navbar.render()}}
@@ -19,17 +21,16 @@
 
 {% block styles %}
 {{super()}}
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %}
 
 {% block head %}
 {{super()}}
-<script src="/static/ckeditor/ckeditor.js"></script>
+<script defer src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 {% endblock %}
 
-<html>
- <body>
-    {% block content %}{% endblock %}
-  </body>
-</html>
+{% block content %}
+
+{% endblock %}

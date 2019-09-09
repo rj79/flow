@@ -1,5 +1,4 @@
-from app import db
-from app.model import User
+from app.model import User, db
 from tests.test_common import BaseTestCase as tc
 
 class TestAuth(tc):

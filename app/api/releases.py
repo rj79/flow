@@ -1,9 +1,9 @@
+from app.model import Project, Release
+from database import db
+from datetime import date, datetime
+from flask import abort
 from flask_restful import Resource, fields, marshal, marshal_with, reqparse
 from flask_login import login_required
-from flask import abort
-from datetime import date, datetime
-from app.model import Project, Release
-from app import db
 from utils import json_error as je
 
 class DateField(fields.Raw):

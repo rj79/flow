@@ -1,8 +1,9 @@
-from app import db, login_manager
+from app import login_manager
+from app.common import State, issue_type_name
+from database import db
 from datetime import datetime
 from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
 from werkzeug import generate_password_hash, check_password_hash
-from app.common import State, issue_type_name
 
 @login_manager.user_loader
 def load_user(user_id):
