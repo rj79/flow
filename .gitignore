@@ -1,3 +1,6 @@
 .ok*
 .venv
 __pycache__
+*.sqlite
+settings.json
+tags
