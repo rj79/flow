@@ -16,7 +16,7 @@
   <div class="modal-content">
     <h4><i class="fa fa-cube fa-2x"></i> Create Project</h4>
     <div class="modal-body">
-      {{ wtf.quick_form(project_form, action=url_for('api.projects')) }}
+      {{ wtf.quick_form(project_form, action=url_for('api.v1.projects')) }}
     </div>
     <div class="modal-footer">
       <button type="button" class="btn">Close</button>

@@ -32,8 +32,8 @@ $(OK_PIP): $(VENV)
 $(OK_REQ): $(OK_PIP) requirements.txt
 	$(PIP) install -r requirements.txt && touch $@
 
-$(OK_TESTS): $(OK_REQ) *.py app/*.py app/api/*.py tests/*.py
-	$(PYTHON) -m unittest discover -s tests && touch $@
+$(OK_TESTS): $(OK_REQ) *.py app/*.py app/api/v1/*.py tests/*.py
+		$(PYTHON) -m unittest discover -s tests && touch $@
 
 run: $(OK_TESTS)
 	PATH=$(VENV)/bin:$(PATH) FLASK_DEBUG=1 FLASK_APP=flow.py flask run

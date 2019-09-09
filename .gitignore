@@ -1,6 +1,8 @@
+__pycache__
 .ok*
 .venv
-__pycache__
+.vscode
 *.sqlite
 settings.json
 tags
+
