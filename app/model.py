@@ -1,7 +1,7 @@
 from app import login_manager
 from app.common import State, issue_type_name
 from database import db
-from datetime import datetime
+from datetime import datetime, time, date
 from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
 from werkzeug import generate_password_hash, check_password_hash
 
@@ -58,11 +58,14 @@ class Team(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(64))
 
+class IssueType(db.Model):
+    __tablename__ = 'issuetypes'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(64), unique=True)
 
 class Issue(db.Model):
     __tablename__ = 'issues'
     id = Column(Integer, primary_key=True)
-    issue_type_id = Column(Integer)
     created_date = Column(DateTime, nullable=False, default=utcnow)
     state = Column(Integer, default=State.CREATED)
     resolution = Column(Integer)
@@ -70,7 +73,9 @@ class Issue(db.Model):
     description = Column(String(1024))
     blocked = Column(Boolean, default=False)
     reopen_count = Column(Integer, default=0)
-    project_id = Column(Integer, ForeignKey('projects.id'), nullable=True)
+    requirement_link = Column(String(256), nullable=True)
+    issue_type_id = Column(Integer, ForeignKey('issuetypes.id'), nullable=False)
+    project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
     target_release_id = Column(Integer, ForeignKey('releases.id'), nullable=True)
     team_id = Column(Integer, ForeignKey('teams.id'), nullable = True)
     creator_id = Column(Integer, ForeignKey('users.id'))
@@ -81,6 +86,7 @@ class Issue(db.Model):
     team = db.relationship('Team')
     creator = db.relationship('User', foreign_keys=[creator_id])
     assignee = db.relationship('User', foreign_keys=[assignee_id])
+    issuetype = db.relationship('IssueType')
 
     def __init__(self, project, issue_type, title):
         self.project_id = project.id
@@ -91,8 +97,9 @@ class Issue(db.Model):
         self.state = common.OPEN
         self.reopen_count += 1
 
-    def get_key(self):
-        return "%s-%d" % (self.project.key, self.id)
+    @property
+    def key(self):
+        return f'{self.project.key}-{self.id}'
 
     def typename(self):
         try:
@@ -101,7 +108,7 @@ class Issue(db.Model):
             return "Unknown type"
 
     def __repr__(self):
-        return '<Issue "%s">' % (self.title)
+        return f'<Issue "{self.key}">'
 
 
 """
@@ -178,5 +185,5 @@ class User(db.Model):
             id = jwt.decode(token, current_app.config['SECRET_KEY'],
                             algorithms=['HS256'])['reset_password']
         except:
-            return
+            return None
         return User.query.get(id)
